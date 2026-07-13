@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ms" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watikah Pelantikan Wira Alam Sekitar</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Tone.js for Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        fredoka: ['"Fredoka One"', 'cursive'],
+                        quicksand: ['Quicksand', 'sans-serif'],
+                        cursive: ['"Great Vibes"', 'cursive'],
+                    },
+                    colors: {
+                        sky: {
+                            150: '#E0F2FE',
+                        },
+                        nature: {
+                            sky: '#7dd3fc',
+                            grass: '#10b981',
+                            earth: '#78350f',
+                            leaf: '#34d399'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'sway-slow': 'sway 6s ease-in-out infinite alternate',
+                        'sway-fast': 'sway 3s ease-in-out infinite alternate',
+                        'pulse-glow': 'pulseGlow 2s infinite alternate',
+                        'cloud-drift-slow': 'cloudDrift 45s linear infinite',
+                        'cloud-drift-fast': 'cloudDrift 25s linear infinite',
+                        'wing-flap': 'wingFlap 0.4s linear infinite alternate',
+                        'river-flow': 'riverFlow 10s linear infinite',
+                        'text-pop': 'textPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                        'rotate-badge': 'rotateBadge 8s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        @keyframes sway {
+            0% { transform: rotate(-3deg); }
+            100% { transform: rotate(3deg); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); transform: scale(1); }
+            100% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); transform: scale(1.05); }
+        }
+        @keyframes cloudDrift {
+            0% { transform: translateX(-150%); }
+            100% { transform: translateX(150vw); }
+        }
+        @keyframes wingFlap {
+            0% { transform: scaleY(1); }
+            100% { transform: scaleY(0.4); }
+        }
+        @keyframes riverFlow {
+            0% { background-position-x: 0px; }
+            100% { background-position-x: 1000px; }
+        }
+        @keyframes rotateBadge {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        @keyframes rollUp {
+            0% { transform: scaleY(1); opacity: 1; transform-origin: top; }
+            100% { transform: scaleY(0); opacity: 0; transform-origin: top; }
+        }
+
+        .animate-sway-slow {
+            transform-origin: bottom center;
+            animation: sway 6s ease-in-out infinite alternate;
+        }
+        .animate-sway-fast {
+            transform-origin: bottom center;
+            animation: sway 3s ease-in-out infinite alternate;
+        }
+        .scroll-rolled-up {
+            animation: rollUp 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+
+        /* Ambient floating butterfly */
+        .butterfly-container {
+            animation: butterflyMove 15s linear infinite;
+        }
+        @keyframes butterflyMove {
+            0% { left: -10%; top: 60%; transform: scale(0.6) rotate(15deg); }
+            25% { top: 40%; transform: scale(0.8) rotate(-10deg); }
+            50% { top: 55%; transform: scale(1) rotate(20deg); }
+            75% { top: 35%; transform: scale(0.8) rotate(-15deg); }
+            100% { left: 110%; top: 50%; transform: scale(0.6) rotate(10deg); }
+        }
+
+        /* Flying Bird SVG animation path */
+        .bird-container {
+            animation: birdMove 25s linear infinite;
+        }
+        @keyframes birdMove {
+            0% { left: 110%; top: 20%; transform: scale(0.5); }
+            100% { left: -20%; top: 10%; transform: scale(0.8); }
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            /* Hide absolute background wrappers, navigation headers and footers */
+            header, footer, .pointer-events-none, #transition-curtain, .no-print {
+                display: none !important;
+            }
+            /* Make the certificate container use full printable area */
+            #card-stage {
+                display: block !important;
+                visibility: visible !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100% !important;
+                max-width: 100% !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                transform: none !important;
+            }
+            #certificate-print-area {
+                border: 12px double #b45309 !important; /* Gold/amber border */
+                background: #fffdf9 !important;
+                box-shadow: none !important;
+                padding: 2rem !important;
+                color-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-b from-sky-300 via-sky-100 to-emerald-100 h-full font-quicksand flex flex-col justify-between overflow-x-hidden overflow-y-auto select-none">
+
+    <div class="absolute inset-0 pointer-events-none overflow-hidden z-0 no-print">
+        <div class="absolute top-12 left-0 w-32 md:w-48 opacity-80 animate-cloud-drift-slow">
+            <svg class="text-white fill-current" viewBox="0 0 100 100"><path d="M10 50 C20 30, 40 30, 50 45 C60 30, 85 35, 90 50 C98 50, 98 70, 90 70 L10 70 C2 70, 2 50, 10 50 Z"/></svg>
+        </div>
+        <div class="absolute top-28 left-0 w-24 md:w-36 opacity-60 animate-cloud-drift-fast" style="animation-delay: -10s;">
+            <svg class="text-white fill-current" viewBox="0 0 100 100"><path d="M10 50 C20 30, 40 30, 50 45 C60 30, 85 35, 90 50 C98 50, 98 70, 90 70 L10 70 C2 70, 2 50, 10 50 Z"/></svg>
+        </div>
+        <div class="absolute top-8 left-0 w-40 md:w-60 opacity-40 animate-cloud-drift-slow" style="animation-delay: -25s;">
+            <svg class="text-white fill-current" viewBox="0 0 100 100"><path d="M10 50 C20 30, 40 30, 50 45 C60 30, 85 35, 90 50 C98 50, 98 70, 90 70 L10 70 C2 70, 2 50, 10 50 Z"/></svg>
+        </div>
+    </div>
+
+    <!-- Interactive/Ambient Butterflies -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden z-10 no-print">
+        <div class="absolute butterfly-container w-8 h-8 flex items-center justify-center">
+            <svg class="fill-current text-pink-400" viewBox="0 0 24 24" width="28" height="28">
+                <path d="M12,10C11.3,7 8.5,5 5.5,5C2.5,5 1,7 1,10C1,14 4.5,19 12,22C19.5,19 23,14 23,10C23,7 21.5,5 18.5,5C15.5,5 12.7,7 12,10Z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Interactive/Ambient Birds -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden z-10 no-print">
+        <div class="absolute bird-container w-12 h-8 flex items-center justify-center">
+            <svg class="fill-current text-blue-400" viewBox="0 0 24 24" width="36" height="36">
+                <path d="M12 2C6.5 2 2 6.5 2 12c0 2 .6 3.9 1.7 5.5l-1.4 1.4c-.4.4-.4 1 0 1.4s1 .4 1.4 0l1.4-1.4c1.6 1.1 3.5 1.7 5.5 1.7 5.5 0 10-4.5 10-10S17.5 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="relative z-20 flex-1 flex flex-col items-center justify-start p-4 md:p-8 max-w-6xl mx-auto w-full">
+        <!-- Header -->
+        <header class="text-center mb-4 transition-all duration-700" id="header-section">
+            <h1 class="text-3xl md:text-5xl font-fredoka text-emerald-800 drop-shadow-md flex items-center justify-center gap-3">
+                <span>🌱</span> Pelan Tindakan Saya <span>🌍</span>
+            </h1>
+            <p class="text-sm md:text-lg font-bold text-emerald-600 mt-1">Sertai Pengembaraan Menjadi Wira Alam Sekitar Sebenar!</p>
+        </header>
+
+        <!-- Dynamic Game Arena / Stages -->
+        <div class="w-full flex-1 flex flex-col items-center justify-center relative min-h-[480px]">
+
+            <div id="mascot-stage" class="flex flex-col items-center justify-center w-full max-w-2xl text-center space-y-6">
+                <!-- Mascot (Earth Hero) with breathing and floating animation -->
+                <div class="relative w-44 h-44 md:w-56 md:h-56 animate-float flex items-center justify-center cursor-pointer" onclick="triggerMascotGiggle()">
+                    <!-- Cute 3D styled vector Earth -->
+                    <svg class="w-full h-full drop-shadow-2xl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Earth Body Circle -->
+                        <circle cx="100" cy="100" r="85" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4"/>
+                        <!-- Land Continents Green -->
+                        <path d="M100 20C80 30 75 50 60 55C45 60 30 50 25 65C20 80 35 90 45 105C55 120 40 140 50 155C60 170 85 175 100 180C120 170 145 160 155 145C165 130 150 110 160 95C170 80 178 70 175 55C170 35 140 25 100 20Z" fill="#10b981"/>
+                        <!-- Sweet Cute Eyes -->
+                        <circle cx="70" cy="95" r="9" fill="#111827"/>
+                        <circle cx="130" cy="95" r="9" fill="#111827"/>
+                        <!-- Eye Highlights -->
+                        <circle cx="67" cy="91" r="3.5" fill="#ffffff"/>
+                        <circle cx="127" cy="91" r="3.5" fill="#ffffff"/>
+                        <circle cx="72" cy="98" r="1" fill="#ffffff"/>
+                        <circle cx="132" cy="98" r="1" fill="#ffffff"/>
+                        <!-- Blushing cheeks -->
+                        <circle cx="56" cy="106" r="8" fill="#f43f5e" fill-opacity="0.6"/>
+                        <circle cx="144" cy="106" r="8" fill="#f43f5e" fill-opacity="0.6"/>
+                        <!-- Cute Smiling Mouth -->
+                        <path d="M85 112 C85 130, 115 130, 115 112" stroke="#111827" stroke-width="5" stroke-linecap="round" fill="none"/>
+                        <!-- Green Hero Leaf Hat -->
+                        <path d="M100 5 C115 25, 100 45, 100 45 C100 45, 85 25, 100 5 Z" fill="#34d399" stroke="#059669" stroke-width="2"/>
+                        <path d="M100 15 L100 45" stroke="#059669" stroke-width="1.5"/>
+                    </svg>
+                    <!-- Small pulsing crown of hearts or leaves -->
+                    <span class="absolute -top-2 left-1/2 transform -translate-x-1/2 text-3xl animate-bounce">🌱</span>
+                </div>
+
+                <!-- Speech dialogue container with dynamic typewriter text -->
+                <div onclick="skipTypewriter()" class="relative bg-white border-4 border-emerald-400 p-6 rounded-3xl shadow-xl max-w-lg w-full transition-all duration-300 transform scale-100 cursor-pointer hover:border-emerald-500 hover:shadow-2xl group" title="Klik untuk melangkau dialog">
+                    <!-- Typewriter Text Target -->
+                    <p id="mascot-text" class="text-gray-700 text-lg md:text-xl font-bold min-h-[50px] pt-2 leading-relaxed">
+                        <!-- Content inserted dynamically -->
+                    </p>
+                    <div class="mt-4 flex flex-col items-center gap-2">
+                        <button id="btn-start-action" onclick="transitionToForm(); event.stopPropagation();" class="hidden bg-yellow-400 hover:bg-yellow-500 text-emerald-900 font-fredoka text-lg px-8 py-3 rounded-2xl shadow-lg border-b-4 border-yellow-600 transition-all transform active:scale-95 flex items-center gap-2">
+                            Mula Sekarang <i class="fa-solid fa-arrow-right animate-pulse"></i>
+                        </button>
+                        <!-- Click helper hint -->
+                        <span id="click-hint" class="text-xs text-emerald-500 font-bold animate-pulse mt-1">💡 Klik kotak ini untuk melangkau teks dialog!</span>
+                    </div>
+                    <!-- Speech bubble pointer pointing upwards to the character -->
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[16px] border-b-white"></div>
+                </div>
+            </div>
+
+
+            <div id="scroll-stage" class="hidden w-full max-w-3xl bg-[#fdfaf2] border-8 border-amber-800 rounded-3xl shadow-2xl p-6 md:p-8 relative transition-all duration-700 transform scale-95 opacity-0">
+                <!-- Ribbon & Leaf decorations inside the container -->
+                <div class="absolute top-2 right-4 text-emerald-600 text-2xl opacity-60">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <div class="absolute bottom-2 left-4 text-emerald-600 text-2xl opacity-60">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+
+                <div class="text-center mb-6">
+                    <span class="bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-emerald-300">
+                        Isikan Pelan Tindakan Wira
+                    </span>
+                    <h2 class="text-2xl md:text-3xl font-fredoka text-amber-900 mt-2">Daftar Sijil Ikrar Wira Alam Sekitar</h2>
+                </div>
+
+                <!-- Personal Name Input Block -->
+                <div class="bg-emerald-50 p-4 rounded-2xl border-2 border-emerald-200 shadow-sm mb-6">
+                    <label class="block text-emerald-800 text-lg font-bold mb-2 flex items-center gap-2 justify-center md:justify-start">
+                        👤 Tuliskan Nama Penuh Anda (Untuk Sijil):
+                    </label>
+                    <input type="text" id="student-name" placeholder="Sila taip nama anda di sini..." oninput="validateInputs()"
+                           class="w-full bg-white border-b-4 border-emerald-400 focus:border-emerald-600 text-emerald-800 font-bold px-4 py-2.5 outline-none rounded-xl text-lg shadow-sm transition-all text-center placeholder-gray-400">
+                </div>
+
+                <!-- Three main fill-in-the-blank sentences -->
+                <div class="space-y-8 my-6">
+                    <!-- Blank 1 -->
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 shadow-sm relative group">
+                        <div class="flex flex-col md:flex-row md:items-center gap-3">
+                            <span class="flex items-center justify-center bg-red-100 text-red-500 rounded-full w-10 h-10 text-xl font-bold shrink-0">
+                                🛍️
+                            </span>
+                            <div class="flex-1 text-amber-900 text-lg md:text-xl leading-relaxed flex flex-wrap items-center gap-2">
+                                <span>Saya akan mengurangkan penggunaan</span>
+                                <div class="relative inline-block min-w-[200px] max-w-full">
+                                    <input type="text" id="blank1" placeholder="taip sendiri / pilih..." oninput="validateInputs()" onclick="highlightBlank(1)"
+                                           class="w-full bg-white border-b-4 border-emerald-400 focus:border-emerald-600 text-emerald-800 font-bold px-3 py-1 outline-none rounded-t-lg transition-all text-center cursor-text">
+                                </div>
+                                <span>setiap hari.</span>
+                            </div>
+                            <button onclick="toggleSuggestions(1)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-fredoka text-xs px-4 py-2 rounded-xl transition-all shadow active:scale-95 flex items-center gap-1 shrink-0">
+                                <i class="fa-solid fa-lightbulb"></i> Cadangan
+                            </button>
+                        </div>
+                        <!-- Suggestions Container 1 -->
+                        <div id="suggestions-box-1" class="hidden mt-4 pt-3 border-t border-dashed border-amber-200">
+                            <p class="text-xs font-bold text-amber-700 mb-2">Klik cadangan jawapan di bawah (pilihan):</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="selectSuggestion(1, 'beg plastik')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🛍️ beg plastik</button>
+                                <button onclick="selectSuggestion(1, 'penyedut plastik')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🥤 penyedut plastik</button>
+                                <button onclick="selectSuggestion(1, 'bekas makanan polistirena')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🥡 polistirena</button>
+                                <button onclick="selectSuggestion(1, 'botol minuman pakai buang')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🍼 botol pakai buang</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blank 2 -->
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 shadow-sm relative group">
+                        <div class="flex flex-col md:flex-row md:items-center gap-3">
+                            <span class="flex items-center justify-center bg-emerald-100 text-emerald-600 rounded-full w-10 h-10 text-xl font-bold shrink-0">
+                                🌱
+                            </span>
+                            <div class="flex-1 text-amber-900 text-lg md:text-xl leading-relaxed flex flex-wrap items-center gap-2">
+                                <span>Saya berjanji untuk mula</span>
+                                <div class="relative inline-block min-w-[200px] max-w-full">
+                                    <input type="text" id="blank2" placeholder="taip sendiri / pilih..." oninput="validateInputs()" onclick="highlightBlank(2)"
+                                           class="w-full bg-white border-b-4 border-emerald-400 focus:border-emerald-600 text-emerald-800 font-bold px-3 py-1 outline-none rounded-t-lg transition-all text-center cursor-text">
+                                </div>
+                                <span>.</span>
+                            </div>
+                            <button onclick="toggleSuggestions(2)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-fredoka text-xs px-4 py-2 rounded-xl transition-all shadow active:scale-95 flex items-center gap-1 shrink-0">
+                                <i class="fa-solid fa-lightbulb"></i> Cadangan
+                            </button>
+                        </div>
+                        <!-- Suggestions Container 2 -->
+                        <div id="suggestions-box-2" class="hidden mt-4 pt-3 border-t border-dashed border-amber-200">
+                            <p class="text-xs font-bold text-amber-700 mb-2">Klik cadangan jawapan di bawah (pilihan):</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="selectSuggestion(2, 'menggunakan beg mesra alam')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">👜 beg mesra alam</button>
+                                <button onclick="selectSuggestion(2, 'mengasingkan sampah')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🗑️ mengasingkan sampah</button>
+                                <button onclick="selectSuggestion(2, 'menjimatkan penggunaan air')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🚰 menjimatkan air</button>
+                                <button onclick="selectSuggestion(2, 'menutup suis elektrik')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">💡 menutup suis elektrik</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blank 3 -->
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 shadow-sm relative group">
+                        <div class="flex flex-col md:flex-row md:items-center gap-3">
+                            <span class="flex items-center justify-center bg-blue-100 text-blue-500 rounded-full w-10 h-10 text-xl font-bold shrink-0">
+                                👨‍👩‍👧
+                            </span>
+                            <div class="flex-1 text-amber-900 text-lg md:text-xl leading-relaxed flex flex-wrap items-center gap-2">
+                                <span>Saya akan bersama keluarga</span>
+                                <div class="relative inline-block min-w-[200px] max-w-full">
+                                    <input type="text" id="blank3" placeholder="taip sendiri / pilih..." oninput="validateInputs()" onclick="highlightBlank(3)"
+                                           class="w-full bg-white border-b-4 border-emerald-400 focus:border-emerald-600 text-emerald-800 font-bold px-3 py-1 outline-none rounded-t-lg transition-all text-center cursor-text">
+                                </div>
+                                <span>.</span>
+                            </div>
+                            <button onclick="toggleSuggestions(3)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-fredoka text-xs px-4 py-2 rounded-xl transition-all shadow active:scale-95 flex items-center gap-1 shrink-0">
+                                <i class="fa-solid fa-lightbulb"></i> Cadangan
+                            </button>
+                        </div>
+                        <!-- Suggestions Container 3 -->
+                        <div id="suggestions-box-3" class="hidden mt-4 pt-3 border-t border-dashed border-amber-200">
+                            <p class="text-xs font-bold text-amber-700 mb-2">Klik cadangan jawapan di bawah (pilihan):</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="selectSuggestion(3, 'menanam pokok hijau')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🌳 menanam pokok</button>
+                                <button onclick="selectSuggestion(3, 'mengitar semula kertas')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">📦 mengitar semula</button>
+                                <button onclick="selectSuggestion(3, 'membersihkan halaman rumah')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🧹 membersihkan rumah</button>
+                                <button onclick="selectSuggestion(3, 'berbasikal ke taman bunga')" class="bg-white hover:bg-emerald-100 text-emerald-800 text-xs md:text-sm font-bold py-2 px-3 rounded-full border-2 border-emerald-200 transition-all active:scale-95 shadow-sm">🚲 berbasikal bersama</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Action Button -->
+                <div class="flex justify-center mt-8">
+                    <button id="btn-submit-action" disabled onclick="submitActionPlan()"
+                            class="px-10 py-4 rounded-2xl font-fredoka text-lg md:text-xl shadow-lg border-b-4 border-gray-400 bg-gray-300 text-gray-500 cursor-not-allowed transition-all duration-300 transform active:scale-95">
+                        <i class="fa-solid fa-paper-plane mr-2"></i>Selesaikan Pelan Tindakan Saya
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Step 3: Grow-up/Supercharge Ambient Transition Container -->
+            <div id="transition-curtain" class="hidden absolute inset-0 flex flex-col items-center justify-center z-40 bg-white/20 backdrop-blur-sm pointer-events-none">
+                <div class="text-center bg-white/95 border-4 border-emerald-500 p-8 rounded-3xl shadow-2xl max-w-md mx-auto space-y-4 animate-bounce">
+                    <span class="text-6xl block">🌟</span>
+                    <h3 class="text-2xl font-fredoka text-emerald-800">Menyediakan Watikah Wira Anda...</h3>
+                    <p class="text-emerald-600 font-bold">Alam sekitar kini sedang membesar dengan subur!</p>
+                </div>
+            </div>
+
+
+            <div id="card-stage" class="hidden w-full max-w-2xl bg-gradient-to-tr from-yellow-500 via-amber-400 to-emerald-300 p-2 rounded-[2.5rem] shadow-2xl relative transition-all duration-700 transform scale-90 opacity-0 z-30">
+                <!-- Inner Elegant Certificate Paper -->
+            <div id="certificate-print-area" class="bg-[#fffdf9] rounded-[2.3rem] p-6 md:p-10 flex flex-col items-center text-center space-y-6 relative overflow-hidden border-8 border-double border-amber-600 shadow-inner">
+                
+                <!-- Decorative Leafs in Corners -->
+                <div class="absolute top-4 left-4 text-emerald-700 text-3xl opacity-30 pointer-events-none select-none">🌿</div>
+                <div class="absolute top-4 right-4 text-emerald-700 text-3xl opacity-30 pointer-events-none select-none">🌿</div>
+                <div class="absolute bottom-4 left-4 text-emerald-700 text-3xl opacity-30 pointer-events-none select-none">🌿</div>
+                <div class="absolute bottom-4 right-4 text-emerald-700 text-3xl opacity-30 pointer-events-none select-none">🌿</div>
+
+                <!-- Certificate Header -->
+                <div class="space-y-1">
+                    <div class="text-xs font-fredoka text-amber-700 tracking-widest uppercase">Pendidikan Moral Sekolah Rendah</div>
+                    <h2 class="text-3xl md:text-4xl font-fredoka text-emerald-900">WATIKAH PELANTIKAN</h2>
+                    <h3 class="text-lg md:text-xl font-bold text-amber-800 uppercase tracking-wide">WIRA ALAM SEKITAR</h3>
+                        <div class="h-1 w-40 bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-500 mx-auto rounded-full mt-2"></div>
+                    </div>
+
+                    <!-- "Dengan ini diperakui bahawa" statement -->
+                    <div class="text-gray-600 font-bold text-sm tracking-wide mt-2">
+                        Dengan ini diperakui dan disahkan secara rasmi bahawa:
+                    </div>
+
+                    <!-- Dynamic Personalized Name Section -->
+                    <div class="w-full py-2">
+                        <span id="cert-name" class="text-3xl md:text-4xl font-cursive text-amber-900 border-b-2 border-dashed border-amber-500 px-8 pb-1 inline-block drop-shadow-sm font-semibold">
+                            Nama Pelajar
+                        </span>
+                        <p class="text-xs text-emerald-700 font-bold mt-2">Telah berjaya menamatkan misi pembelajaran dan dengan ikhlas berikrar:</p>
+                    </div>
+
+                    <!-- Custom dynamic pledge statements -->
+                    <div class="w-full text-left space-y-4 py-4 px-5 bg-emerald-50/50 backdrop-blur-sm rounded-2xl border-2 border-emerald-100 shadow-inner">
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl mt-0.5 select-none shrink-0">🌍</span>
+                            <p class="text-emerald-950 font-bold text-sm md:text-base leading-relaxed">
+                                Saya akan mengurangkan penggunaan <span id="card-pledge-1" class="text-amber-800 font-fredoka border-b border-amber-300"></span> setiap hari.
+                            </p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl mt-0.5 select-none shrink-0">🌱</span>
+                            <p class="text-emerald-950 font-bold text-sm md:text-base leading-relaxed">
+                                Saya berjanji untuk mula <span id="card-pledge-2" class="text-amber-800 font-fredoka border-b border-amber-300"></span>.
+                            </p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl mt-0.5 select-none shrink-0">👨‍👩‍👧</span>
+                            <p class="text-emerald-950 font-bold text-sm md:text-base leading-relaxed">
+                                Saya akan bersama keluarga <span id="card-pledge-3" class="text-amber-800 font-fredoka border-b border-amber-300"></span>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Grid for Badge, Seals & Signature -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full pt-4 items-center border-t border-dashed border-amber-200">
+                        <!-- 3D rotating badge -->
+                        <div class="flex flex-col items-center space-y-2">
+                            <!-- Badge Rotating container -->
+                            <div class="relative w-28 h-28 select-none perspective-1000">
+                                <!-- Rotating 3D styled vector golden medal -->
+                                <div class="w-full h-full animate-rotate-badge" style="transform-style: preserve-3d;">
+                                    <svg class="w-full h-full drop-shadow-lg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- Outer Gold Shiny Ring -->
+                                        <circle cx="60" cy="60" r="50" fill="url(#gold-gradient)" stroke="#d97706" stroke-width="4"/>
+                                        <!-- Inner Circle -->
+                                        <circle cx="60" cy="60" r="40" fill="#047857" stroke="#ffffff" stroke-width="2"/>
+                                        <!-- Sparkles/Stars -->
+                                        <polygon points="60,26 63,33 70,33 65,37 67,44 60,40 53,44 55,37 50,33 57,33" fill="#fbbf24"/>
+                                        <!-- Leaf Icon Center of Badge -->
+                                        <path d="M60 40 C65 52, 60 76, 60 76 C60 76, 55 52, 60 40 Z" fill="#34d399"/>
+                                        <path d="M60 76 C68 64, 76 60, 76 60" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M60 76 C52 64, 44 60, 44 60" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+                                        <!-- Wira Earth Emblem text path mock or simple text -->
+                                        <text x="60" y="88" fill="#ffffff" font-family="'Fredoka One', cursive" font-size="7" text-anchor="middle">WIRA ALAM SEKITAR</text>
+                                        
+                                        <!-- Definitions for premium gradient -->
+                                        <defs>
+                                            <radialGradient id="gold-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(60 60) rotate(90) scale(50)">
+                                                <stop offset="0%" stop-color="#fbbf24" />
+                                                <stop offset="70%" stop-color="#f59e0b" />
+                                                <stop offset="100%" stop-color="#b45309" />
+                                            </radialGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full">Lencana Wira Alam Sekitar 3D</span>
+                        </div>
+
+                        <!-- Signatures & Official Stamp simulated -->
+                        <div class="flex flex-col items-center md:items-end justify-center space-y-1 text-center md:text-right pr-2">
+                            <!-- Mascot Cute Signature -->
+                            <div class="h-12 flex items-center justify-center mr-4">
+                                <span class="font-cursive text-emerald-600 text-4xl transform -rotate-6">Mascot Bumi 🌍</span>
+                            </div>
+                            <div class="w-48 h-0.5 bg-gray-400"></div>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Tandatangan Penyelamat Bumi</p>
+                            <!-- Date Issued -->
+                            <p class="text-[11px] font-bold text-emerald-800 mt-2">Tarikh Watikah: <span id="cert-date-output"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Warm message for Year 1 kids -->
+                    <div class="text-center px-2 pt-2">
+                        <p class="text-gray-600 font-bold text-xs md:text-sm leading-relaxed italic">
+                            "Tahniah! Anda kini bergelar Wira Alam Sekitar. Teruskan mengamalkan janji anda setiap hari supaya bumi kita sentiasa bersih, sihat dan indah."
+                        </p>
+                    </div>
+
+                    <!-- Action buttons at base of card -->
+                    <div class="flex flex-col sm:flex-row gap-3 w-full pt-4 no-print">
+                        <button onclick="printCertificate()" class="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-fredoka py-3 px-6 rounded-2xl shadow-md border-b-4 border-sky-700 transition-all transform active:scale-95 flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-print"></i> Cetak Watikah / PDF
+                        </button>
+                        <button onclick="resetActivity()" class="flex-1 bg-amber-400 hover:bg-amber-500 text-amber-950 font-fredoka py-3 px-6 rounded-2xl shadow-md border-b-4 border-amber-600 transition-all transform active:scale-95 flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-rotate-right"></i> Isi Semula Ikrar
+                        </button>
+                        <button onclick="finishJourney()" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-fredoka py-3 px-6 rounded-2xl shadow-md border-b-4 border-emerald-700 transition-all transform active:scale-95 flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-circle-check"></i> Selesai
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Farewell/End Stage screen -->
+            <div id="farewell-stage" class="hidden text-center max-w-md w-full bg-white border-4 border-emerald-500 rounded-3xl p-8 shadow-2xl space-y-6 transform scale-90 transition-all duration-700">
+                <span class="text-7xl block animate-bounce">🎈🌍✨</span>
+                <h2 class="text-3xl font-fredoka text-emerald-800">Tamat Pengembaraan!</h2>
+                <p class="text-emerald-700 font-bold text-lg">Syabas! Anda adalah kebanggaan Bumi kita. Teruskan amalan hijau di dunia nyata!</p>
+                <div class="pt-4">
+                    <button onclick="resetActivity()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-fredoka px-8 py-3 rounded-2xl shadow-lg border-b-4 border-emerald-700 transition-all active:scale-95">
+                        Mulakan Semula Ikrar
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="relative w-full z-10 select-none overflow-hidden h-[180px] md:h-[240px] shrink-0 mt-auto pointer-events-none no-print">
+        <!-- Floating Leaves Layer -->
+        <div class="absolute inset-x-0 bottom-16 h-20 overflow-hidden pointer-events-none z-10">
+            <svg class="absolute animate-sway-slow opacity-30 fill-current text-emerald-500" style="left:15%; bottom:40px; transform: scale(1.2)" width="32" height="32" viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L7,18C12,14 18,12 21,8C22,5 20,3 17,8Z"/></svg>
+            <svg class="absolute animate-sway-fast opacity-20 fill-current text-green-400" style="right:25%; bottom:20px; transform: scale(1)" width="24" height="24" viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L7,18C12,14 18,12 21,8C22,5 20,3 17,8Z"/></svg>
+        </div>
+
+        <!-- Layer of beautiful rolling green hills -->
+        <svg class="absolute bottom-0 w-full h-[150px] md:h-[180px] text-emerald-600/90 fill-current" preserveAspectRatio="none" viewBox="0 0 1440 200">
+            <path d="M0,128L120,138.7C240,149,480,171,720,165.3C960,160,1200,128,1320,112L1440,96L1440,200L1320,200C1200,200,960,200,720,200C480,200,240,200,120,200L0,200Z"></path>
+        </svg>
+        <svg class="absolute bottom-0 w-full h-[120px] md:h-[140px] text-emerald-500/95 fill-current" preserveAspectRatio="none" viewBox="0 0 1440 200">
+            <path d="M0,96L120,112C240,128,480,160,720,160C960,160,1200,128,1320,112L1440,96L1440,200L1320,200C1200,200,960,200,720,200C480,200,240,200,120,200L0,200Z"></path>
+        </svg>
+
+        <!-- Swaying trees on the left & right sides -->
+        <div class="absolute bottom-0 left-[2%] md:left-[10%] w-24 md:w-32 z-20 animate-sway-slow">
+            <svg class="w-full h-full drop-shadow-md" viewBox="0 0 100 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="42" y="90" width="16" height="60" fill="#78350f" rx="4"/>
+                <circle cx="50" cy="65" r="45" fill="#047857"/>
+                <circle cx="35" cy="45" r="30" fill="#059669"/>
+                <circle cx="65" cy="45" r="30" fill="#10b981"/>
+                <circle cx="45" cy="80" r="20" fill="#065f46"/>
+            </svg>
+        </div>
+
+        <div class="absolute bottom-0 right-[2%] md:right-[10%] w-28 md:w-36 z-20 animate-sway-fast">
+            <svg class="w-full h-full drop-shadow-md" viewBox="0 0 100 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="45" y="80" width="10" height="70" fill="#78350f" rx="2"/>
+                <path d="M50 15 C20 40 30 90 50 90 C70 90 80 40 50 15 Z" fill="#047857"/>
+                <path d="M50 25 C35 45 40 80 50 80 C60 80 65 45 50 25 Z" fill="#10b981"/>
+            </svg>
+        </div>
+
+        <!-- Gently flowing dynamic river running across the front bottom -->
+        <div class="absolute bottom-0 w-full h-[30px] md:h-[45px] bg-sky-400 opacity-90 z-30 flex items-center justify-center overflow-hidden">
+            <div class="w-full h-full opacity-65 bg-[linear-gradient(45deg,rgba(255,255,255,.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)_50%,rgba(255,255,255,.15)_75%,transparent_75%,transparent)] bg-[size:40px_40px] animate-river-flow"></div>
+        </div>
+    </footer>
+
+    <script>
+        const introText = "Tahniah! Anda telah berjaya menyelesaikan semua misi. Kini, tuliskan pelan tindakan anda untuk menjadi Wira Alam Sekitar yang sebenar!";
+        let textIndex = 0;
+        let typewriterActive = true;
+        const mascotTextEl = document.getElementById('mascot-text');
+        const startBtn = document.getElementById('btn-start-action');
+        const clickHintEl = document.getElementById('click-hint');
+
+        // Sounds setup via ToneJS
+        let synth;
+        function initSynth() {
+            try {
+                if (typeof Tone !== 'undefined' && !synth) {
+                    synth = new Tone.PolySynth(Tone.Synth).toDestination();
+                    synth.set({
+                        oscillator: { type: "sine" },
+                        envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 0.8 }
+                    });
+                }
+            } catch (e) {
+                console.warn("Tone.js initialization blocked.", e);
+            }
+        }
+
+        function playPopSound() {
+            try {
+                initSynth();
+                if (synth && typeof Tone !== 'undefined') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease("E5", "16n", now);
+                    synth.triggerAttackRelease("G5", "16n", now + 0.08);
+                }
+            } catch (e) {}
+        }
+
+        function playSuccessChime() {
+            try {
+                initSynth();
+                if (synth && typeof Tone !== 'undefined') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease("C5", "8n", now);
+                    synth.triggerAttackRelease("E5", "8n", now + 0.1);
+                    synth.triggerAttackRelease("G5", "8n", now + 0.2);
+                    synth.triggerAttackRelease("C6", "4n", now + 0.3);
+                }
+            } catch (e) {}
+        }
+
+        function playGiggleSound() {
+            try {
+                initSynth();
+                if (synth && typeof Tone !== 'undefined') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease("A5", "16n", now);
+                    synth.triggerAttackRelease("F#5", "16n", now + 0.05);
+                    synth.triggerAttackRelease("A5", "16n", now + 0.1);
+                }
+            } catch (e) {}
+        }
+
+        // Mascot cute interaction sound & bounce
+        function triggerMascotGiggle() {
+            playGiggleSound();
+            const mascot = document.querySelector('#mascot-stage > div');
+            if (mascot) {
+                mascot.classList.add('animate-bounce');
+                setTimeout(() => {
+                    mascot.classList.remove('animate-bounce');
+                }, 1000);
+            }
+            if (typewriterActive) {
+                skipTypewriter();
+            }
+        }
+
+        // Typewriter Effect for dialogue
+        function startIntroTypewriter() {
+            if (!typewriterActive) return;
+            
+            if (textIndex < introText.length) {
+                mascotTextEl.innerHTML += introText.charAt(textIndex);
+                textIndex++;
+                
+                if (textIndex % 6 === 0) {
+                    try {
+                        initSynth();
+                        if (synth) synth.triggerAttackRelease("C6", "32n", undefined, 0.03);
+                    } catch (e) {}
+                }
+                setTimeout(startIntroTypewriter, 20);
+            } else {
+                completeTypewriterSequence();
+            }
+        }
+
+        function skipTypewriter() {
+            if (!typewriterActive) return;
+            typewriterActive = false;
+            mascotTextEl.innerHTML = introText;
+            completeTypewriterSequence();
+        }
+
+        function completeTypewriterSequence() {
+            typewriterActive = false;
+            if (startBtn) {
+                startBtn.classList.remove('hidden');
+                startBtn.classList.add('animate-text-pop');
+            }
+            if (clickHintEl) {
+                clickHintEl.classList.add('hidden');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(startIntroTypewriter, 300);
+            
+            // Safety Net: Show start button if typewriter stalls
+            setTimeout(function() {
+                if (typewriterActive) {
+                    skipTypewriter();
+                }
+            }, 1800);
+
+            // Populate today's date dynamically on certificate
+            setCertificateDate();
+        });
+
+        // Set dynamic certificate date
+        function setCertificateDate() {
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = today.toLocaleDateString('ms-MY', options);
+            document.getElementById('cert-date-output').textContent = formattedDate;
+        }
+
+        // Blank management
+        let currentActiveBlank = null;
+
+        function highlightBlank(number) {
+            currentActiveBlank = number;
+            playPopSound();
+            
+            for(let i=1; i<=3; i++) {
+                if(i !== number) {
+                    document.getElementById(`suggestions-box-${i}`).classList.add('hidden');
+                }
+            }
+
+            const suggestionsBox = document.getElementById(`suggestions-box-${number}`);
+            suggestionsBox.classList.remove('hidden');
+            suggestionsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function toggleSuggestions(number) {
+            const box = document.getElementById(`suggestions-box-${number}`);
+            if (box.classList.contains('hidden')) {
+                highlightBlank(number);
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        function selectSuggestion(number, text) {
+            playPopSound();
+            const inputEl = document.getElementById(`blank${number}`);
+            inputEl.value = text;
+            
+            validateInputs();
+            document.getElementById(`suggestions-box-${number}`).classList.add('hidden');
+        }
+
+        function validateInputs() {
+            const studentName = document.getElementById('student-name').value.trim();
+            const b1 = document.getElementById('blank1').value.trim();
+            const b2 = document.getElementById('blank2').value.trim();
+            const b3 = document.getElementById('blank3').value.trim();
+            const btnSubmit = document.getElementById('btn-submit-action');
+
+            if (studentName !== "" && b1 !== "" && b2 !== "" && b3 !== "") {
+                btnSubmit.removeAttribute('disabled');
+                btnSubmit.classList.remove('bg-gray-300', 'text-gray-500', 'border-gray-400', 'cursor-not-allowed');
+                btnSubmit.classList.add('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'border-emerald-700', 'animate-pulse-glow');
+            } else {
+                btnSubmit.setAttribute('disabled', 'true');
+                btnSubmit.classList.add('bg-gray-300', 'text-gray-500', 'border-gray-400', 'cursor-not-allowed');
+                btnSubmit.classList.remove('bg-emerald-500', 'hover:bg-emerald-600', 'text-white', 'border-emerald-700', 'animate-pulse-glow');
+            }
+        }
+
+        function transitionToForm() {
+            playPopSound();
+            const mascotStage = document.getElementById('mascot-stage');
+            const scrollStage = document.getElementById('scroll-stage');
+
+            mascotStage.classList.add('duration-500', 'scale-90', 'opacity-0');
+            setTimeout(() => {
+                mascotStage.classList.add('hidden');
+                
+                scrollStage.classList.remove('hidden');
+                setTimeout(() => {
+                    scrollStage.classList.remove('scale-95', 'opacity-0');
+                    scrollStage.classList.add('scale-100', 'opacity-100');
+                }, 50);
+            }, 500);
+        }
+
+        function submitActionPlan() {
+            playSuccessChime();
+            
+            const scrollStage = document.getElementById('scroll-stage');
+            const transitionCurtain = document.getElementById('transition-curtain');
+            const cardStage = document.getElementById('card-stage');
+            const headerSection = document.getElementById('header-section');
+
+            // Roll up notebook
+            scrollStage.classList.add('scroll-rolled-up');
+
+            // Set student's name & dynamic pledge outputs on the certificate
+            const nameValue = document.getElementById('student-name').value.trim();
+            document.getElementById('cert-name').textContent = nameValue;
+            document.getElementById('card-pledge-1').textContent = document.getElementById('blank1').value;
+            document.getElementById('card-pledge-2').textContent = document.getElementById('blank2').value;
+            document.getElementById('card-pledge-3').textContent = document.getElementById('blank3').value;
+
+            setTimeout(() => {
+                scrollStage.classList.add('hidden');
+                transitionCurtain.classList.remove('hidden');
+
+                spawnExtraLeaves();
+
+                setTimeout(() => {
+                    transitionCurtain.classList.add('hidden');
+                    headerSection.classList.add('scale-90', 'opacity-80');
+
+                    cardStage.classList.remove('hidden');
+                    setTimeout(() => {
+                        cardStage.classList.remove('scale-90', 'opacity-0');
+                        cardStage.classList.add('scale-100', 'opacity-100');
+                        
+                        triggerConfettiShower();
+                    }, 100);
+
+                }, 1800);
+
+            }, 1000);
+        }
+
+        // Confetti generator
+        function triggerConfettiShower() {
+            var duration = 4 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#34d399', '#fbbf24', '#60a5fa', '#f43f5e']
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#34d399', '#fbbf24', '#60a5fa', '#f43f5e']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        function spawnExtraLeaves() {
+            const container = document.body;
+            for (let i = 0; i < 8; i++) {
+                const leaf = document.createElement('div');
+                leaf.innerHTML = '🍃';
+                leaf.style.position = 'absolute';
+                leaf.style.left = Math.random() * 80 + 10 + '%';
+                leaf.style.bottom = '10%';
+                leaf.style.fontSize = Math.random() * 20 + 20 + 'px';
+                leaf.style.zIndex = '5';
+                leaf.style.pointerEvents = 'none';
+                leaf.style.transition = 'all 2s ease-out';
+                container.appendChild(leaf);
+
+                setTimeout(() => {
+                    leaf.style.transform = 'translateY(-200px) rotate(360deg)';
+                    leaf.style.opacity = '0';
+                    setTimeout(() => leaf.remove(), 2000);
+                }, 100);
+            }
+        }
+
+        function printCertificate() {
+            playPopSound();
+            window.print();
+        }
+
+        function resetActivity() {
+            playPopSound();
+            
+            // Clear inputs
+            document.getElementById('student-name').value = "";
+            document.getElementById('blank1').value = "";
+            document.getElementById('blank2').value = "";
+            document.getElementById('blank3').value = "";
+            validateInputs();
+
+            for(let i=1; i<=3; i++) {
+                document.getElementById(`suggestions-box-${i}`).classList.add('hidden');
+            }
+
+            const mascotStage = document.getElementById('mascot-stage');
+            const cardStage = document.getElementById('card-stage');
+            const scrollStage = document.getElementById('scroll-stage');
+            const farewellStage = document.getElementById('farewell-stage');
+            const headerSection = document.getElementById('header-section');
+
+            headerSection.classList.remove('scale-90', 'opacity-80');
+            cardStage.classList.add('hidden', 'scale-90', 'opacity-0');
+            farewellStage.classList.add('hidden', 'scale-90');
+            scrollStage.classList.remove('scroll-rolled-up');
+            scrollStage.classList.add('hidden', 'scale-95', 'opacity-0');
+
+            mascotStage.classList.remove('hidden', 'scale-90', 'opacity-0');
+            mascotStage.classList.add('scale-100', 'opacity-100');
+        }
+
+        function finishJourney() {
+            playSuccessChime();
+            const cardStage = document.getElementById('card-stage');
+            const farewellStage = document.getElementById('farewell-stage');
+
+            cardStage.classList.add('hidden');
+            farewellStage.classList.remove('hidden');
+            setTimeout(() => {
+                farewellStage.classList.remove('scale-90');
+                farewellStage.classList.add('scale-100');
+            }, 50);
+        }
+    </script>
+</body>
+</html>
